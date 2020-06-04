@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const likes = parentDiv.querySelector('p')
 
     likes.id = parseInt(likes.id) + 1
-    likes.textContent = `${likes.id} Likes`
+    likes.textContent = `${likes.id} likes`
     console.log(likes.id)
 
     let configObj = {
