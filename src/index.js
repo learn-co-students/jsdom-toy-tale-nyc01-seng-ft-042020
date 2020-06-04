@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
     div.innerHTML = `
     <h2>${obj.name}</h2>
     <img src=${obj.image} class="toy-avatar" />
-    <p>${obj.likes} likes</p>
+    <p id=${obj.likes}>${obj.likes} likes</p>
     <button class="like-btn">Like <3</button>
     `
     toyContainer.appendChild(div)
@@ -83,9 +83,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const parentDiv = e.target.parentNode
     const likes = parentDiv.querySelector('p')
 
-    likes.textContent = parseInt(likes.textContent) + 1
-    likes.setAttribute('likes', 
-    console.log(e)
+    likes.id = parseInt(likes.id) + 1
+    likes.textContent = `${likes.id} Likes`
+    console.log(likes.id)
 
     let configObj = {
       method: "PATCH",
@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
         Accept: "application/json"
       },
       body: JSON.stringify({
-        'likes': likes.textContent
+        'likes': likes.id
       })
     }
     fetch(`http://localhost:3000/toys/${parentDiv.id}`, configObj)
