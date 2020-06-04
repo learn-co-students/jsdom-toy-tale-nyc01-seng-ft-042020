@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const addBtn = document.querySelector("#new-toy-btn");
   const toyFormContainer = document.querySelector(".container");
   const toyCollection = document.querySelector("#toy-collection");
+  const likeButton = 
   
 
   addBtn.addEventListener("click", () => {
@@ -22,21 +23,21 @@ document.addEventListener("DOMContentLoaded", () => {
     renderToy(toyForm)
     toyForm.name.value = ""
     toyForm.image.value = ""
-
-
+    
     return fetch ("http://localhost:3000/toys", {
       method: "POST",
       headers:{
-      "Content-Type": "application/json",
-      Accept: "application/json"
+        "Content-Type": "application/json",
+        Accept: "application/json"
       },
-
+      
       body: JSON.stringify({
         "name": toyForm.name.value,
         "image": toyForm.image.value,
         "likes": 0
       })
     })
+    
   });
 
   fetch('http://localhost:3000/toys')
@@ -52,10 +53,11 @@ document.addEventListener("DOMContentLoaded", () => {
   function createToy(toyObj){
     const toyDiv = document.createElement('div')
     toyDiv.className = 'card'
+    toyDiv.id = toyObj.id
     toyDiv.innerHTML = `
     <h2>${toyObj.name}</h2>
     <img src="${toyObj.image}" height="142" width="142">
-    <p> 0 Likes </p>
+    <p> ${toyObj.likes} likes </p>
     <button class="like-btn">Like <3</button>
     `
     toyCollection.appendChild(toyDiv)
@@ -64,15 +66,34 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderToy(toyObj){
     const toyDiv = document.createElement('div')
     toyDiv.className = 'card'
+    toyDiv.id = toyObj.id
     toyDiv.innerHTML = `
     <h2>${toyObj.name.value}</h2>
     <img src="${toyObj.image.value}" height="142" width="142">
-    <p> 0 Likes </p>
+    <p> 0 likes </p>
     <button class="like-btn">Like <3</button>
     `
     toyCollection.appendChild(toyDiv)
   }
 
-});
+  document.addEventListener('click', function(e){
+    if(e.target.className === 'like-btn'){
+      const parentDiv = e.target.parentNode
+      const toyP = parentDiv.querySelector('p')
+      toyP.textContent = parseInt(toyP.textContent) + 1
+      
+      return fetch ("http://localhost:3000/toys", {
+        method: "PATCH",
+        headers:{
+        "Content-Type": "application/json",
+        Accept: "application/json"
+        },
 
-"Colors!!!"
+        body: JSON.stringify({
+          "likes": toyP.textContent
+        })
+      })
+    }
+  });
+
+});
