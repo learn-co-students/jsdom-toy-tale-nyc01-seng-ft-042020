@@ -5,7 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const toyFormContainer = document.querySelector(".container");
   const toyContainer = document.querySelector('#toy-collection')
   const submitButton = document.querySelector('.add-toy-form')
-  const likeButton = document.querySelector('.like-btn')
+  
+
 
   addBtn.addEventListener("click", () => {
     // hide & seek with the form
@@ -25,7 +26,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function renderToys(obj){
     obj.forEach(function(obj){
-      console.log(obj)
       renderToy(obj)
     })
   }
@@ -33,6 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderToy(obj){
     const div = document.createElement('div')
     div.className = 'card'
+    div.id = `${obj.id}`
     div.innerHTML = `
     <h2>${obj.name}</h2>
     <img src=${obj.image} class="toy-avatar" />
@@ -75,13 +76,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //find the text content for the likes
   //add event listener to the button
-  
 
-  likeButton.addEventListener('click', function(e){
+  document.addEventListener('click', function(e){
+    if(e.target.className === 'like-btn'){
+    console.log("likes")
+    const parentDiv = e.target.parentNode
+    const likes = parentDiv.querySelector('p')
 
+    likes.textContent = parseInt(likes.textContent) + 1
+    likes.setAttribute('likes', 
+    console.log(e)
+
+    let configObj = {
+      method: "PATCH",
+      headers: 
+      {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body: JSON.stringify({
+        'likes': likes.textContent
+      })
+    }
+    fetch(`http://localhost:3000/toys/${parentDiv.id}`, configObj)
+  }
   })
-
-
-
-
 });
