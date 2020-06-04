@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.addEventListener('click', function(e){
     if(e.target.className === 'like-btn'){
-    console.log("likes")
+
     const parentDiv = e.target.parentNode
     const likes = parentDiv.querySelector('p')
 
